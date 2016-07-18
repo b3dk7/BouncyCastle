@@ -42,35 +42,27 @@ function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
   // background image
   game.add.sprite(0, 0, 'sky');
+
   
-  
-  
-  
-    // the platforms group
+  // the platforms group
   platforms = game.add.group();
   // give objects physics
   platforms.enableBody = true;
-  
-  
-  
+
   //platforms
   var ledge = platforms.create(400, 400, 'ground');
+  ledge.body.immovable = true;
   
   
   players=game.add.group()
-  
-  
-  //var xplayer = game.add.sprite(200, 240, 'dude');
-  //players.add(xplayer);
-  
+
   player = game.add.sprite((game.world.width*0.6), 80, 'dude');
   player2 = game.add.sprite((game.world.width*0.5), 80, 'dude2');
   players.add(player2);
   players.add(player);
   
-  //game.physics.arcade.enable(player);
   game.physics.arcade.enable(players);
-  player.body.bounce.y = player2.body.bounce.y = 0.5;
+  player.body.bounce.y = player2.body.bounce.y = 1;
   player.body.bounce.x = player2.body.bounce.x = 0.5;
   player.body.gravity.y= player2.body.gravity.y = 350;
 
@@ -80,91 +72,68 @@ function create(){
   
   //creating cursor instance
   cursors = game.input.keyboard.createCursorKeys();
-  
-  //creating WASD
-  keyW = game.input.keyboard.addKey(Phaser.Keyboard.W);
-  keyA = game.input.keyboard.addKey(Phaser.Keyboard.A);
-  keyS = game.input.keyboard.addKey(Phaser.Keyboard.S);
-  keyD = game.input.keyboard.addKey(Phaser.Keyboard.D);
-  
-  
-  
+
   
   //our two animations walking left and right.
-  players.animations.add('left', [0,1], 10, true);
-  players.animations.add('right', [2,3], 10, true);
-  players.animations.add('down', [4,5], 10, true);
-  players.animations.add('up', [6], 10, true);
+  player.animations.add('left', [0,1], 10, true);
+  player.animations.add('right', [2,3], 10, true);
+  player.animations.add('down', [4,5], 10, true);
+  player.animations.add('up', [6], 10, true);
+  
+  player2.animations.add('left', [0,1], 10, true);
+  player2.animations.add('right', [2,3], 10, true);
+  player2.animations.add('down', [4,5], 10, true);
+  player2.animations.add('up', [6], 10, true);
   
   
 }
 function update() {
 
 
-  //player 1
-  if(cursors.left.isDown)
-  {
-    player.body.velocity.x = playerLeft;
-    //player.animations.play('left');
-    player.animations.play('left');
-  }
-  else if(cursors.right.isDown)
-  {
-    player.body.velocity.x = playerRight;
-    //player.animations.play('right');
-    player.animations.play('right');
-  }
-  else if(cursors.down.isDown)
-  {
-    player.body.velocity.y = playerDown;
-    //player.animations.play('right');
-    player.animations.play('down');
-  }
-    else if(cursors.up.isDown)
-  {
-    player.body.velocity.y = playerUp;
-    //player.animations.play('right');
-    player2.animations.play('up');
-  }
-    else
-  {
-      //  Stand still
-      player.animations.stop();
+  
+  controlsManagement(player, cursors.up, cursors.down, cursors.left, cursors.right);
+  controlsManagement(player2, game.input.keyboard.addKey(Phaser.Keyboard.W), game.input.keyboard.addKey(Phaser.Keyboard.S), game.input.keyboard.addKey(Phaser.Keyboard.A), game.input.keyboard.addKey(Phaser.Keyboard.D));
 
-      player.frame = 7;
-  }
-  game.physics.arcade.overlap(players, platforms, collectStar, null, this);
-  
-  
-  
-  //player 2
-  if(keyW.isDown)
-  {
-    player2.body.velocity.y = playerUp;
-    //player.animations.play('left');
-    //player2.animations.play('left');
-  }
-  else if(keyA.isDown){
-    player2.body.velocity.x = playerLeft;
-  }
-  else if(keyS.isDown){
-    player2.body.velocity.y = playerDown;
-  }
-  else if(keyD.isDown){
-    player2.body.velocity.x = playerRight;
-  }
-  else{
-    player.frame = 7;
-  }
     
-  //collisions
+  //collisions  
+  game.physics.arcade.collide(players, platforms);
   game.physics.arcade.collide(players);
+  //game.physics.arcade.overlap(players, platforms, collectStar, null, this);
   
 }
 
 function collectStar(players,platforms){
   players.body.velocity.y = -300;
   //platforms.kill();
+}
+
+
+function controlsManagement(player, up, down, left, right){
+   
+  if(up.isDown)
+  {
+    if(player.body.velocity.y>playerUp)
+      player.body.velocity.y = playerUp;
+    player.animations.play('up');
+    //player2.animations.play('left');
+  }
+  else if(left.isDown){
+    player.body.velocity.x = playerLeft;
+    player.animations.play('left');
+  }
+  else if(down.isDown){
+    player.body.velocity.y = playerDown;
+    player.animations.play('down');
+  }
+  else if(right.isDown){
+    player.body.velocity.x = playerRight;
+    player.animations.play('right');
+  }
+  else{
+    //Stand still
+    player.frame = 7;
+    player.animations.stop();
+  }
 }
 
 </script>
