@@ -64,7 +64,6 @@ var playerUp = 80;
 var playerDown = 300;
 var playerLeft = -300;
 var playerRight = 300;
-var playerSpeed = 300;
 
 function create(){
   //this.swipe = new Swipe(this.game, yourmodel);
@@ -119,39 +118,95 @@ function create(){
   player.animations.add('down', [4,5], 10, true);
   player.animations.add('up', [6], 10, true);
   
-
-  //game.input.mouse.capture = true;
-  game.input.onDown.add(doSomething);
-
-    
-
+  player2.animations.add('left', [0,1], 10, true);
+  player2.animations.add('right', [2,3], 10, true);
+  player2.animations.add('down', [4,5], 10, true);
+  player2.animations.add('up', [6], 10, true);
+  
+  
+  
+  //touch capabilities
+  game.input.onDown.add(moveBall, this);
   
 }
 function update() {
+/*
+  var direction = this.swipe.check();
+  if (direction!==null) {
+    // direction= { x: x, y: y, direction: direction }
+    switch(direction.direction) {
+       case this.swipe.DIRECTION_LEFT:
+	  player.body.velocity.x = playerLeft;
+       case this.swipe.DIRECTION_RIGHT:
+       case this.swipe.DIRECTION_UP:
+       case this.swipe.DIRECTION_DOWN:
+       case this.swipe.DIRECTION_UP_LEFT:
+       case this.swipe.DIRECTION_UP_RIGHT:
+       case this.swipe.DIRECTION_DOWN_LEFT:
+       case this.swipe.DIRECTION_DOWN_RIGHT:
+    }
+  }
 
 
+  
+  if (game.input.activePointer.isDown)
+    {
+      player.body.velocity.x = playerRight;
+    }
+      
+   player.body.velocity.y>playerUp
+    
+      */
+  
+  controlsManagement(player, cursors.up, cursors.down, cursors.left, cursors.right);
+  controlsManagement(player2, game.input.keyboard.addKey(Phaser.Keyboard.W), game.input.keyboard.addKey(Phaser.Keyboard.S), game.input.keyboard.addKey(Phaser.Keyboard.A), game.input.keyboard.addKey(Phaser.Keyboard.D));
+
+    
   //collisions  
   game.physics.arcade.collide(players, platforms);
   game.physics.arcade.collide(players);
-  
-  
-  
-
+  //game.physics.arcade.overlap(players, platforms, collectStar, null, this);
   
 }
 
-function jump() {
-    // Add a vertical velocity to the bird
-    player.body.velocity.y = -300;
+function collectStar(players,platforms){
+  players.body.velocity.y = -300;
+  //platforms.kill();
 }
 
 
-  function doSomething() {
-    if(player.body.velocity.x>0){
-      player.body.velocity.x = -300;
-    }
-    else
-      player.body.velocity.x = 300;
-    
-    
+function controlsManagement(player, up, down, left, right){
+   
+  if(up.isDown)
+  {
+    if(player.body.velocity.y>playerUp)
+      player.body.velocity.y = playerUp;
+    player.animations.play('up');
   }
+  else if(left.isDown){
+    player.body.velocity.x = playerLeft;
+    player.animations.play('left');
+  }
+  else if(down.isDown){
+    if(player.body.velocity.y<playerDown){
+      player.body.velocity.y = playerDown;
+      player.animations.play('down');
+    }
+  }
+  else if(right.isDown){
+    player.body.velocity.x = playerRight;
+    player.animations.play('right');
+  }
+  else{
+    //Stand still
+    player.frame = 7;
+    player.animations.stop();
+  }
+}
+
+
+
+
+
+
+
