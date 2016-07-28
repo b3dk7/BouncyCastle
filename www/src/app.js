@@ -1,7 +1,10 @@
 
 
 
-var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 450, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+//var Swipe = require('phaser-swipe');
+
+
 
 /*
 
@@ -63,15 +66,15 @@ var playerLeft = -300;
 var playerRight = 300;
 
 function create(){
-
-  //scaling options 
-  this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  //this.swipe = new Swipe(this.game, yourmodel);
+  //this.swipe = new Swipe(this.game);
+  //scaling options  SHOW_ALL or EXACT_FIT
+  game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
   //have the game centered horizontally 
-  this.scale.pageAlignHorizontally = true; 
-  this.scale.pageAlignVertically = true;
+  game.scale.pageAlignHorizontally = true; 
+  game.scale.pageAlignVertically = true;
   //screen size will be set automatically 
-  this.scale.setScreenSize(true);
-  
+  game.scale.setScreenSize(true);
   
   // physice
   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -121,10 +124,46 @@ function create(){
   player2.animations.add('up', [6], 10, true);
   
   
+  
+  //touch capabilities
+  game.input.onDown.add(moveBall, this);
+  
 }
 function update() {
-
-
+/*
+  var direction = this.swipe.check();
+  if (direction!==null) {
+    // direction= { x: x, y: y, direction: direction }
+    switch(direction.direction) {
+       case this.swipe.DIRECTION_LEFT:
+	  player.body.velocity.x = playerLeft;
+       case this.swipe.DIRECTION_RIGHT:
+       case this.swipe.DIRECTION_UP:
+       case this.swipe.DIRECTION_DOWN:
+       case this.swipe.DIRECTION_UP_LEFT:
+       case this.swipe.DIRECTION_UP_RIGHT:
+       case this.swipe.DIRECTION_DOWN_LEFT:
+       case this.swipe.DIRECTION_DOWN_RIGHT:
+    }
+  }
+  */
+  /*
+  
+  if (game.input.activePointer.isDown)
+    {
+      if(player.body.velocity.y>playerUp){
+	player.body.velocity.y = playerUp;
+      }
+      player.animations.play('up');
+    }
+    
+  if (game.input.activePointer.movementX==0){
+      player.body.velocity.x = playerLeft;
+    }
+      
+    */
+    
+    
   
   controlsManagement(player, cursors.up, cursors.down, cursors.left, cursors.right);
   controlsManagement(player2, game.input.keyboard.addKey(Phaser.Keyboard.W), game.input.keyboard.addKey(Phaser.Keyboard.S), game.input.keyboard.addKey(Phaser.Keyboard.A), game.input.keyboard.addKey(Phaser.Keyboard.D));
@@ -150,15 +189,16 @@ function controlsManagement(player, up, down, left, right){
     if(player.body.velocity.y>playerUp)
       player.body.velocity.y = playerUp;
     player.animations.play('up');
-    //player2.animations.play('left');
   }
   else if(left.isDown){
     player.body.velocity.x = playerLeft;
     player.animations.play('left');
   }
   else if(down.isDown){
-    player.body.velocity.y = playerDown;
-    player.animations.play('down');
+    if(player.body.velocity.y<playerDown){
+      player.body.velocity.y = playerDown;
+      player.animations.play('down');
+    }
   }
   else if(right.isDown){
     player.body.velocity.x = playerRight;
@@ -170,3 +210,10 @@ function controlsManagement(player, up, down, left, right){
     player.animations.stop();
   }
 }
+
+
+
+
+
+
+
