@@ -1,14 +1,19 @@
 {
-  "categorization": {},
+  "categorization": {
+    "type": "GAME",
+    "category": "Arcade"
+  },
   "description": {
     "texts": {
-      "title": "",
+      "title": "Acid Burn",
       "features": [
-        ""
+        "acid",
+        "game",
+        "open source"
       ],
-      "short-description": "",
-      "full-description": "",
-      "keywords": "",
+      "short-description": "A platform arcade game ",
+      "full-description": "Mind the acid raining from the sky and collect as much dash as you possibly can.",
+      "keywords": "open source, html 5, game",
       "recent-changes": "",
       "privacy-policy": "",
       "eula": ""
@@ -24,6 +29,15 @@
       "video-url": ""
     }
   },
-  "packages": {},
-  "support": {}
+  "packages": {
+    "apk-file": "",
+    "zip-xdk-compliant": false,
+    "zip-file": "",
+    "secondary-apk-file": ""
+  },
+  "support": {
+    "email": "",
+    "website": ""
+  },
+  "testing-instructions": ""
 }

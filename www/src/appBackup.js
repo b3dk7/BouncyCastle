@@ -1,5 +1,6 @@
 
 
+
 var game = new Phaser.Game(800, 450, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
 
 
@@ -11,6 +12,7 @@ function preload() {
   game.load.image('ground', 'asset/platform.png');
   game.load.image('drop', 'asset/drop.png');
   game.load.image('coat', 'asset/coat.png');
+  game.load.image('pool', 'asset/acidpool.png');
   game.load.image('pool', 'asset/acidpool.png');
   game.load.image('dash', 'asset/dash.png');
   game.load.audio('bounce', 'asset/bounce.ogg');
@@ -28,19 +30,15 @@ var drops;
 var dash;
 var pool;
 var controls;
-
+var alive = true;
 var bounce;
 var burn;
 var menuGroup;
 var gameOverGroup;
 var wallet=0;
 
-var highScore=0;
-var previousScore=0;
-
-
 function create(){
-    
+  
   game.paused=true;
 
 
@@ -73,13 +71,22 @@ function create(){
   dash = game.add.group();
   dash.enableBody = true;
   
+ 
   
   
   //set up drops group
   drops = game.add.group();
   drops.enableBody = true;
   
-  //setting up pool
+  //creating the first drop
+  var drop = drops.create(390, -32, 'drop');
+  drop.body.gravity.y = 100;
+  
+  
+
+  //game.physics.arcade.enable(drop);
+  //drop.body.gravity.y = 100;
+  //game.add.sprite(200, 300, 'coat');
   pool = game.add.sprite(0, 440, 'pool');
   game.physics.arcade.enable(pool);
   
@@ -95,7 +102,20 @@ function create(){
   
   
 
+  player = game.add.sprite((game.world.width*0.5)-16, -40, 'dude');
 
+  //player physics
+  game.physics.arcade.enable(player);
+  player.body.bounce.y = 1.007;
+  player.body.gravity.y = 350;
+
+  //player animations
+
+  player.animations.add('left', [1]);
+  player.animations.add('right', [2]);
+  player.animations.add('burned', [3]);
+  player.animations.add('moosch', [4]);
+  player.animations.add('normal', [0]);
 
   
 
@@ -112,14 +132,18 @@ function create(){
   
 }
 function update() {
-
+  if(player.y>400&&alive){
+    player.body.velocity.y = 20;
+    player.body.velocity.x = player.body.velocity.x/4;
+    player.body.gravity.y = 50;
+    acidCollision();
+  }
 
   //collisions  
   game.physics.arcade.collide(player, platforms, platformImpact);
 
 
   game.physics.arcade.overlap(player, drops, acidCollision);
-  game.physics.arcade.overlap(player, pool, acidCollision);
   game.physics.arcade.overlap(player, dash, dashCollection, null, this);
   //game.physics.arcade.overlap(player, pool, acidCollision);
   
@@ -128,31 +152,32 @@ function update() {
   
 }
 
-
+function resetGame(){
+  clicks = -1;
+  //alive = true;
+  wallet=0;
+}
 
 function platformImpact(){
   
-
+  if(alive==false){
+    player.animations.play('moosch');
+    player.body.velocity.x = 0;
+    
+  }
+  else{
     bounce.play();
-
+  }
 }
 
 
 function acidCollision(){
-  //write score
-  //addToFile('hs');
-
-  previousScore = wallet;
-  
-  
-  
   burn.play();
   //conditiontext.text = "oh my God, acidburn!!";
   //game.input.onDown.removeAll();
   player.animations.play('burned');
-
-
-
+  alive =false;
+  player.body.bounce.y = 0;
   gameOver();
 }
 
@@ -162,49 +187,29 @@ function dashCollection(player,dashi){
 }
 
 function gameControl() {  
-
+  //new game
+  if(!alive){
+    gameOverGroup.destroy();
+    alive=true;
+    clicks=-1;
+    wallet=0;
+    player.animations.play('normal');
+    player.x = (game.world.width*0.5)-16;
+    player.y = 80;
+    player.body.velocity.x = 0;
+    player.body.gravity.y = 0;
+    game.paused=true;
+    
+    return;
+  }
   if(clicks==-1){
     
-    wallet=0;
-    
-    //resetting acid drops
-    drops.destroy();
-    drops = game.add.group();
-    drops.enableBody = true;  
-    
-    
-    //resetting dash
-    dash.destroy();
-    dash = game.add.group();
-    dash.enableBody = true;  
-    
-    //resetting player
-    player = game.add.sprite((game.world.width*0.5)-16, 80, 'dude');
-    
-    //player physics
-    game.physics.arcade.enable(player);
-    player.body.bounce.y = 1.007;
-    player.body.gravity.y = 350;
-
-    //player animations
-
-    player.animations.add('left', [1]);
-    player.animations.add('right', [2]);
-    player.animations.add('burned', [3]);
-    player.animations.add('moosch', [4]);
-    player.animations.add('normal', [0]);
-	
     game.paused=false;
     clicks++;
     menuGroup.destroy();
     menuGroup = game.add.group();
-    gameOverGroup.destroy();
-    gameOverGroup = game.add.group();
-
-    //creating the first drop
-    var drop = drops.create(390, -32, 'drop');
-    drop.body.gravity.y = 100;
-      
+    player.x = (game.world.width*0.5)-16;
+    player.y = 80;
     return;
   }
   
@@ -245,37 +250,19 @@ function aciddop(){
 
 function createMenu(){
   
-  var menueWelcome = game.add.text(10, 50, 'Welcome to Acid Burn!', { fill: '#086300'}, menuGroup);
-  var menu1Player = game.add.text(10, 100, 'Click anywhere to start the game', { fill: '#ffffff' },menuGroup);
-  //var menuHighScore = game.add.text(200, 200, 'High Score', { fill: '#ffffff' },menuGroup);
-  
-  instructions();
-
-  
+  var menueWelcome = game.add.text(200, 50, 'Welcome to Acid Burn', { fill: '#ffffff' }, menuGroup);
+  var menu1Player = game.add.text(200, 100, 'Click anywhere to start the game', { fill: '#ffffff' },menuGroup);
+  var menuHighScore = game.add.text(200, 200, 'High Score', { fill: '#ffffff' },menuGroup);
+  var menuTip = game.add.text(100, 300, 'To move the alien around, simply tap the screen', { fill: '#ffffff' },menuGroup);
 }
 
 function gameOver(){
-  //pointstext.destroy();
+  pointstext.destroy();
   var ab = game.add.text(200, 50, 'Oh my God, acidburn!!', { fill: '#c80000' }, gameOverGroup);
   var sc = game.add.text(200, 100, 'You scored: ' +wallet+' Dash', { fill: '#ffffff' }, gameOverGroup);
-  var ins = game.add.text(200, 150, 'Click anywhere to restart the game', { fill: '#ffffff' }, gameOverGroup);
-  instructions();
-  clicks=-1;
-
-}
-
-function instructions(){
-  var menuTip = game.add.text(10, 200, 'To move the alien around, simply tap the screen', { fill: '#ffffff' },menuGroup);
-  var menuTip = game.add.text(10, 250, 'Collect the blue dash coins and avoid the green acid drops', { fill: '#ffffff' },menuGroup);
-  var menuTip = game.add.text(10, 300, 'Bounce off the trampoleen and avoid the acid below', { fill: '#ffffff' },menuGroup);
-  var source = game.add.text(10, 350, 'To check out the source code or support this project visit', { fill: '#ffffff' },menuGroup);
-  var source = game.add.text(10, 400, 'https://github.com/b3dk7/BouncyCastle', { fill: '#a23ca3' },menuGroup);
-
-}
-
-
-function setHighScore(){
-  if(wallet>highScore)
-    highScore = wallet;
-    
+  var ins = game.add.text(200, 250, 'Click anywhere to restart the game', { fill: '#ffffff' }, gameOverGroup);
+  var hs = game.add.text(200, 200, 'High Score: Dash', { fill: '#ffffff' }, gameOverGroup);
+  var ls = game.add.text(200, 150, 'Previous Score: Dash', { fill: '#ffffff' }, gameOverGroup);
+  clicks=-2;
+  //resetGame();
 }
