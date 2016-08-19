@@ -1,26 +1,13 @@
-# Blank Phaser Project with Apache Cordova
+# Acid burn
 
-See [LICENSE.md](./LICENSE.md) for license terms and conditions.
+About the game
+--------------
+In Acid Burn you play an a alien name njama that likes to bounce on bouncy castles but does not like acid. He also likes collecting dash.
 
-This template can be used for creating an Intel XDK game app using the open source game framework Phaser. It is a blank Phaser project, which contains the required files. To get start, please see the key file `app.js`.
-
-Intel(R) XDK
+About the code
 -------------------------------------------
-This template is part of the Intel(R) XDK. 
-Download the Intel XDK at http://xdk.intel.com.
+this platform game is written in javascript using the phaer game library. Intel XDK is used to publish the game as a mobile app. feel free to use the source code as you wish.
 
-Visit https://github.com/gomobile/template-a-blank-cordova for the details about Intel XDK and Apache Cordova project.
-
-Application Files
+Dash support
 -----------------
-* LICENSE.md
-* README.md
-* app.json
-* css/stylesheet.css
-* icons/
-* asset/
-* lib/
-* src/Game.js
-* src/app.js
-* src/cordova-init.js
-* index.html
+if you like this game and want to contribute to its development you can donate some dash (https://www.dash.org/) to the following address XijhaJFyJ3d9HAnFUMF4Nn7tkkTqjHDpFS
