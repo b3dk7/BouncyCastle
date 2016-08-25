@@ -30,6 +30,7 @@ var pool;
 var controls;
 
 var bounce;
+var dashsound;
 var burn;
 var menuGroup;
 var gameOverGroup;
@@ -37,6 +38,8 @@ var wallet=0;
 
 var highScore=0;
 var previousScore=0;
+
+
 
 
 function create(){
@@ -80,7 +83,7 @@ function create(){
   drops.enableBody = true;
   
   //setting up pool
-  pool = game.add.sprite(0, 440, 'pool');
+  pool = game.add.sprite(-800, 440, 'pool');
   game.physics.arcade.enable(pool);
   
   // the platforms group
@@ -101,11 +104,13 @@ function create(){
 
   //mouse controls
   game.input.onDown.add(gameControl);
+  
 
   pointstext = game.add.text(16, 16, '', { fill: '#ffffff' });
 
   
   bounce = game.add.audio('bounce');
+  dashsound = game.add.audio('dashsound');
   burn = game.add.audio('burn');
   //game.sound.setDecodedCallback([ bounce, burn ], start, this);
   
@@ -158,6 +163,7 @@ function acidCollision(){
 
 function dashCollection(player,dashi){
   dashi.kill();
+  dashsound.play();
   wallet++;
 }
 
@@ -255,20 +261,45 @@ function createMenu(){
 }
 
 function gameOver(){
+  
+  
+  
+  game.input.onDown.removeAll();
+
   //pointstext.destroy();
   var ab = game.add.text(200, 50, 'Oh my God, acidburn!!', { fill: '#c80000' }, gameOverGroup);
-  var sc = game.add.text(200, 100, 'You scored: ' +wallet+' Dash', { fill: '#ffffff' }, gameOverGroup);
-  var ins = game.add.text(200, 150, 'Click anywhere to restart the game', { fill: '#ffffff' }, gameOverGroup);
+  var sc = game.add.text(200, 100, 'You scored: ' +wallet+' Dash', { fill: '#1c75bc' }, gameOverGroup);
+
+  
+  game.time.events.add(Phaser.Timer.SECOND * 1, delayGame, this);
+  
+  
   instructions();
   clicks=-1;
 
 }
 
+
+function delayGame(){
+  
+  var ins = game.add.text(200, 150, 'Click anywhere to restart the game', { fill: '#ffffff' }, gameOverGroup);
+  
+  game.input.onDown.add(gameControl);
+  
+  
+  
+
+
+}
+
+
+
+
 function instructions(){
   var menuTip = game.add.text(10, 200, 'To move the alien around, simply tap the screen', { fill: '#ffffff' },menuGroup);
   var menuTip = game.add.text(10, 250, 'Collect the blue dash coins and avoid the green acid drops', { fill: '#ffffff' },menuGroup);
   var menuTip = game.add.text(10, 300, 'Bounce off the trampoleen and avoid the acid below', { fill: '#ffffff' },menuGroup);
-  var source = game.add.text(10, 350, 'To check out the source code or support this project visit', { fill: '#ffffff' },menuGroup);
+  var source = game.add.text(10, 350, 'To check out the source code or and find out more visit', { fill: '#ffffff' },menuGroup);
   var source = game.add.text(10, 400, 'https://github.com/b3dk7/BouncyCastle', { fill: '#a23ca3' },menuGroup);
 
 }

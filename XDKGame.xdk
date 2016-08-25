@@ -5,7 +5,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "jsapp/template-phaser-landscape/sample.zip",
       "projectGuid": "682749e1-b79b-4aad-a200-a8676b6f5ba9",
-      "lastModifiedDate": 1471620231633,
+      "lastModifiedDate": 1472153981414,
       "creationDate": 1469033626176
     },
     "sourceDirectory": "www",
@@ -127,15 +127,69 @@
           ],
           "navigation": []
         },
-        "icons_": [],
-        "splashes_": [],
+        "icons_": [
+          {
+            "density": "ldpi",
+            "relPath": "package-assets/square/36.png",
+            "width": 36,
+            "height": 36
+          },
+          {
+            "density": "mdpi",
+            "relPath": "package-assets/square/48.png",
+            "width": 48,
+            "height": 48
+          },
+          {
+            "density": "hdpi",
+            "relPath": "package-assets/square/72.png",
+            "width": 72,
+            "height": 72
+          },
+          {
+            "density": "xhdpi",
+            "relPath": "package-assets/square/96.png",
+            "width": 96,
+            "height": 96
+          }
+        ],
+        "splashes_": [
+          {
+            "relPath": "package-assets/splash/426.png",
+            "density": "ldpi",
+            "height": 320,
+            "width": 426,
+            "orientation": "landscape"
+          },
+          {
+            "relPath": "package-assets/splash/470.png",
+            "density": "mdpi",
+            "height": 320,
+            "width": 470,
+            "orientation": "landscape"
+          },
+          {
+            "relPath": "package-assets/splash/640.png",
+            "density": "hdpi",
+            "height": 480,
+            "width": 640,
+            "orientation": "landscape"
+          },
+          {
+            "relPath": "package-assets/splash/960.png",
+            "density": "xhdpi",
+            "height": 720,
+            "width": 960,
+            "orientation": "landscape"
+          }
+        ],
         "addlPermissions_": "",
         "excludedLibraries_": "",
         "cordovaCLIVersion_": "5.4.1",
-        "crosswalkVersion_": "18",
+        "crosswalkVersion_": "19",
         "appVersion_": "0.0.1",
-        "appDescription_": "Dash promoting platform game",
-        "appAuthor_": "Intel XDK",
+        "appDescription_": "Platform game where you bounce on an inflatable, collect dash and try to stay away from the acid",
+        "appAuthor_": "snoop",
         "appVersionCode_": "1"
       },
       "iOS": {
