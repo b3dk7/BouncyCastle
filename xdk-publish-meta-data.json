@@ -5,13 +5,15 @@
   },
   "description": {
     "texts": {
-      "title": "Acid Burn",
+      "title": "Acidburn",
       "features": [
         "acid",
         "game",
-        "open source"
+        "open source",
+        "2d",
+        "platform"
       ],
-      "short-description": "A platform arcade game ",
+      "short-description": "A platform arcade alien game ",
       "full-description": "Mind the acid raining from the sky and collect as much dash as you possibly can.",
       "keywords": "open source, html 5, game",
       "recent-changes": "",
@@ -19,9 +21,13 @@
       "eula": ""
     },
     "images": {
-      "screenshots": [],
-      "app-icon-small": "",
-      "app-icon": "",
+      "screenshots": [
+        "package-assets/screens.png",
+        "package-assets/screen2.png",
+        "package-assets/screen3.png"
+      ],
+      "app-icon-small": "package-assets/square/114.png",
+      "app-icon": "package-assets/square/512.png",
       "small-promo": "",
       "large-promo": ""
     },
@@ -30,14 +36,14 @@
     }
   },
   "packages": {
-    "apk-file": "",
-    "zip-xdk-compliant": false,
-    "zip-file": "",
-    "secondary-apk-file": ""
+    "apk-file": "../../../../home/snoop/Downloads/cordova_project-x86.android.20160825194035.apk",
+    "zip-xdk-compliant": true,
+    "zip-file": "../../../../home/snoop/Downloads/xdkgame.cordova.crosswalk.201608253856.zip",
+    "secondary-apk-file": "../../../../home/snoop/Downloads/cordova_project-armv7.android.20160825194050.apk"
   },
   "support": {
     "email": "babysnoop@riseup.net",
-    "website": ""
+    "website": "https://github.com/b3dk7/BouncyCastle"
   },
   "testing-instructions": ""
 }
