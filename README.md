@@ -9,9 +9,3 @@ you can play the game in the browser at https://babysnoop.itch.io/acidburn and a
 
 ## About the code
 this platform game is written in javascript using the phaer game library. Intel XDK is used to publish the game as a mobile app. feel free to use the source code as you wish. You can even pulish the game anywhere without having to ask me.
-
-## Scereenshot
-
-
-## Dash support
-if you like this game and want to contribute to its development you can donate some dash (https://www.dash.org/) to the following address XijhaJFyJ3d9HAnFUMF4Nn7tkkTqjHDpFS
