@@ -60,6 +60,8 @@ function create(){
 
   //scaling options  SHOW_ALL or EXACT_FIT
   game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+  //game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+  game.scale.startFullScreen(true);
   //have the game centered horizontally 
   game.scale.pageAlignHorizontally = true; 
   game.scale.pageAlignVertically = true;
@@ -143,6 +145,14 @@ function platformImpact(){
 }
 
 
+function gofull() {
+
+
+        game.scale.startFullScreen(false);
+    
+
+}
+
 function acidCollision(){
   //write score
   //addToFile('hs');
@@ -156,7 +166,7 @@ function acidCollision(){
   //game.input.onDown.removeAll();
   player.animations.play('burned');
 
-
+  
 
   gameOver();
 }
@@ -171,6 +181,7 @@ function gameControl() {
 
   if(clicks==-1){
     
+    gofull();
     wallet=0;
     
     //resetting acid drops
